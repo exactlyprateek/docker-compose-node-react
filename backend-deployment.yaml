@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivia-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trivia-api
+  template:
+    metadata:
+      labels:
+        app: trivia-api
+    spec:
+      containers:
+        - name: trivia-api
+          image: gcr.io/vpn-gcp-411410/trivia-api/v1
+          ports:
+            - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trivia-api-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3001
+      protocol: TCP
+  selector:
+    app: trivia-api

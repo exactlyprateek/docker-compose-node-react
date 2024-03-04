@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivia-api-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trivia-api-nginx
+  template:
+    metadata:
+      labels:
+        app: trivia-api-nginx
+    spec:
+      containers:
+        - name: trivia-api-nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trivia-nginx-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: trivia-api-nginx
